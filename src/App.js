@@ -36,7 +36,11 @@ function Timer() {
 
   const handleClick = (e) => {
     e.preventDefault();
-    setRunning(!running)
+    if (time === 0) {
+      setTime(4);
+    } else {
+      setRunning(!running);
+    }
   };
 
   const formatTime = (seconds) => {
