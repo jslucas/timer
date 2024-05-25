@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from 'react'
+import Digit from './timer/digit.js'
 
 export default function Timer() {
   const SET_TIME = 'set-time';
@@ -91,7 +92,7 @@ export default function Timer() {
 
   return (
     <div id="timer" onClick={handleClick}>
-      <span id={Math.random()}>{state.firstM}</span><span id={Math.random()}>{state.secondM}</span>:<span id={Math.random()}>{state.firstS}</span><span id={Math.random()}>{state.secondS}</span>
+      <Digit num={state.firstM} /><Digit num={state.secondM} />:<Digit num={state.firstS} /><Digit num={state.secondS} />
     </div>
   )
 }
