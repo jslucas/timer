@@ -1,22 +1,36 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useReducer } from 'react'
 
 export default function Timer() {
-  const [time, setTime] = useState(4);
-  const [running, setRunning] = useState(false);
+  const SET_TIME = 'set-time';
+  const SET_RUNNING = 'set-running';
+
+  const reduce = (state, action) => {
+    switch (action.type) {
+      case SET_TIME: 
+        return { ...state, time: action.payload(state.time) };
+      case SET_RUNNING: 
+        return { ...state, running: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(reduce, { time: 4, running: false });
+
 
   useEffect(() => {
     let intervalId;
 
-    if (running) {
+    if (state.running) {
       intervalId = setInterval(() => {
-        setTime(prevTime => { 
+        dispatch({type: SET_TIME, payload: prevTime => { 
           if (prevTime > 0) {
             return prevTime - 1
           } else {
-            setRunning(false);
+            dispatch({type: SET_RUNNING, payload: false});
             return 0
           }
-        }); 
+        }}); 
       }, 1000);
 
       console.log(`started interval: ${intervalId}`);
@@ -30,14 +44,14 @@ export default function Timer() {
       };
     };
         
-  }, [running]);
+  }, [state.running]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (time === 0) {
-      setTime(4);
+    if (state.time === 0) {
+      dispatch({type: SET_TIME, payload: 4});
     } else {
-      setRunning(!running);
+      dispatch({type: SET_RUNNING, payload: !state.running});
     }
   };
 
@@ -50,7 +64,7 @@ export default function Timer() {
 
   return (
     <div id="timer" onClick={handleClick}>
-      {formatTime(time)}
+      {formatTime(state.time)}
     </div>
   )
 }
