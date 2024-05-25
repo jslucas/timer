@@ -4,10 +4,36 @@ export default function Timer() {
   const SET_TIME = 'set-time';
   const SET_RUNNING = 'set-running';
 
+  const firstM = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    return Math.floor(mins / 10);
+  };
+
+  const secondM = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    return Math.floor(mins % 10);
+  };
+
+  const firstS = (seconds) => {
+    return Math.floor(seconds % 60 / 10);
+  };
+
+  const secondS = (seconds) => {
+    return Math.floor(seconds % 60 % 10);
+  };
+
   const reduce = (state, action) => {
     switch (action.type) {
       case SET_TIME: 
-        return { ...state, time: action.payload(state.time) };
+        let updatedTime = action.payload(state.time);
+        return {
+          ...state,
+          time: updatedTime,
+          firstM: firstM(updatedTime),
+          secondM: secondM(updatedTime),
+          firstS: firstS(updatedTime),
+          secondS: secondS(updatedTime)
+        };
       case SET_RUNNING: 
         return { ...state, running: action.payload };
       default:
@@ -15,8 +41,15 @@ export default function Timer() {
     }
   };
 
-  const [state, dispatch] = useReducer(reduce, { time: 4, running: false });
-
+  const initialState = {
+    time: 765,
+    running: false,
+    firstM: 1,
+    secondM: 2,
+    firstS: 4,
+    secondS: 5,
+  };
+  const [state, dispatch] = useReducer(reduce, initialState);
 
   useEffect(() => {
     let intervalId;
@@ -54,17 +87,11 @@ export default function Timer() {
       dispatch({type: SET_RUNNING, payload: !state.running});
     }
   };
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+  
 
   return (
     <div id="timer" onClick={handleClick}>
-      {formatTime(state.time)}
+      <span id={Math.random()}>{state.firstM}</span><span id={Math.random()}>{state.secondM}</span>:<span id={Math.random()}>{state.firstS}</span><span id={Math.random()}>{state.secondS}</span>
     </div>
   )
 }
