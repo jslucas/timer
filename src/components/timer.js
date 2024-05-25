@@ -144,7 +144,7 @@ export default function Timer() {
   }
 
   return (
-    <div id="timer" onClick={handleClick}>
+    <div id="timer" className={state.running ? '' : 'paused'} onClick={handleClick}>
       <MDigit num={state.firstM} onWheel={(e) => { handleWheel(e, "firstM"); }} />
       <MDigit num={state.secondM} onWheel={(e) => { handleWheel(e, "secondM"); }} />
       :
