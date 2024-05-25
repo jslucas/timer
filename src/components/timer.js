@@ -85,7 +85,7 @@ export default function Timer() {
   const handleClick = (e) => {
     e.preventDefault();
     if (state.time === 0) {
-      dispatch({type: SET_TIME, payload: 4});
+      return
     } else {
       dispatch({type: SET_RUNNING, payload: !state.running});
     }
@@ -135,12 +135,11 @@ export default function Timer() {
         } else if (newTime >= 3600) {
           return 3600
         } else {
+          tickAudio.play();
           return newTime
         }
       }
     });
-
-    tickAudio.play();
   }
 
   return (
