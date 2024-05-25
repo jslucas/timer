@@ -1,5 +1,5 @@
-import { useEffect, useReducer } from 'react'
-import Digit from './timer/digit.js'
+import React, { useEffect, useReducer } from 'react'
+import { MDigit } from './timer/digit.js'
 
 export default function Timer() {
   const SET_TIME = 'set-time';
@@ -92,7 +92,7 @@ export default function Timer() {
 
   return (
     <div id="timer" onClick={handleClick}>
-      <Digit num={state.firstM} /><Digit num={state.secondM} />:<Digit num={state.firstS} /><Digit num={state.secondS} />
+      <MDigit num={state.firstM} /><MDigit num={state.secondM} />:<MDigit num={state.firstS} /><MDigit num={state.secondS} />
     </div>
   )
 }
