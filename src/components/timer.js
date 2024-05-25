@@ -1,9 +1,11 @@
 import React, { useEffect, useReducer } from 'react'
 import { MDigit } from './timer/digit.js'
+import tick from '../assets/384187__malle99__click-tick.wav'
 
 export default function Timer() {
   const SET_TIME = 'set-time';
   const SET_RUNNING = 'set-running';
+  const tickAudio = new Audio(tick);
 
   const firstM = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -137,6 +139,8 @@ export default function Timer() {
         }
       }
     });
+
+    tickAudio.play();
   }
 
   return (
