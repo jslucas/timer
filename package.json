@@ -45,6 +45,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "latest",
     "@tauri-apps/cli": "^1.5.14"
   }
 }
