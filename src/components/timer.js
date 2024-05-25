@@ -89,10 +89,63 @@ export default function Timer() {
     }
   };
   
+  const handleWheel = ({ deltaY }, digitName) => {
+    let how_to_change;
+    
+    if (deltaY === 0) {
+      return
+    } else if(deltaY > 0) {
+      how_to_change = "increase"
+    } else {
+      how_to_change = "decrease"
+    }
+    
+    let how_much_to_change;
+
+    switch(digitName) {
+      case "firstM":
+        how_much_to_change = 10 * 60
+        break;
+      case "secondM":
+        how_much_to_change = 60
+        break;
+      case "firstS":
+        how_much_to_change = 10
+        break;
+      case "secondS":
+        how_much_to_change = 1
+        break;
+      default:
+        return
+    };
+
+    if (how_to_change === 'increase') {
+      how_much_to_change *= -1;
+    };
+
+    dispatch({
+      type: SET_TIME,
+      payload: (prevTime) => {
+        let newTime = prevTime + how_much_to_change; 
+
+        if (newTime <= 0) {
+          return 0
+        } else if (newTime >= 3600) {
+          return 3600
+        } else {
+          return newTime
+        }
+      }
+    });
+  }
 
   return (
     <div id="timer" onClick={handleClick}>
-      <MDigit num={state.firstM} /><MDigit num={state.secondM} />:<MDigit num={state.firstS} /><MDigit num={state.secondS} />
+      <MDigit num={state.firstM} onWheel={(e) => { handleWheel(e, "firstM"); }} />
+      <MDigit num={state.secondM} onWheel={(e) => { handleWheel(e, "secondM"); }} />
+      :
+      <MDigit num={state.firstS} onWheel={(e) => { handleWheel(e, "firstS"); }} />
+      <MDigit num={state.secondS} onWheel={(e) => { handleWheel(e, "secondS"); }} />
     </div>
   )
 }
