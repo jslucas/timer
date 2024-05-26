@@ -50,7 +50,7 @@ export default function Timer() {
 
   const reducer = (state: State, action: Action): State => {
     switch (action.type) {
-      case SET_TIME:
+      case SET_TIME: {
         const updatedTime = action.payload(state.time);
         return {
           ...state,
@@ -60,6 +60,7 @@ export default function Timer() {
           firstS: firstS(updatedTime),
           secondS: secondS(updatedTime),
         };
+      }
       case SET_RUNNING:
         return { ...state, running: action.payload };
       default:
