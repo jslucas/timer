@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
-import './App.css';
-import Timer from './components/timer.tsx'; 
+import "./App.css";
+import Timer from "./components/timer.tsx";
 
 function App() {
   return (
