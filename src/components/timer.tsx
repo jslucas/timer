@@ -51,7 +51,7 @@ export default function Timer() {
   const reducer = (state: State, action: Action): State => {
     switch (action.type) {
       case SET_TIME:
-        let updatedTime = action.payload(state.time);
+        const updatedTime = action.payload(state.time);
         return {
           ...state,
           time: updatedTime,
@@ -152,7 +152,7 @@ export default function Timer() {
     dispatch({
       type: SET_TIME,
       payload: (prevTime) => {
-        let newTime = prevTime + how_much_to_change;
+        const newTime = prevTime + how_much_to_change;
 
         if (newTime <= 0) {
           return 0
