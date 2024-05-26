@@ -94,13 +94,10 @@ export default function Timer() {
           },
         });
       }, 1000);
-
-      console.log(`started interval: ${intervalId}`);
     }
 
     return () => {
       if (intervalId) {
-        console.log(`Clearing interval: ${intervalId}`);
         clearInterval(intervalId);
       }
     };
