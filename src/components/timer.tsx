@@ -5,7 +5,30 @@ import tick from "../assets/384187__malle99__click-tick.wav";
 export default function Timer() {
   const SET_TIME = "set-time";
   const SET_RUNNING = "set-running";
+  const MIN_TIMER_VALUE = 0;
+  const MAX_TIMER_VALUE = 3600;
   const tickAudio = new Audio(tick);
+
+  interface State {
+    time: number;
+    running: boolean;
+    firstM: number;
+    secondM: number;
+    firstS: number;
+    secondS: number;
+  }
+
+  interface SET_TIME_ACTION {
+    type: typeof SET_TIME;
+    payload: (time: number) => number;
+  }
+
+  interface SET_RUNNING_ACTION {
+    type: typeof SET_RUNNING;
+    payload: boolean;
+  }
+
+  type Action = SET_TIME_ACTION | SET_RUNNING_ACTION;
 
   const firstM = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -24,29 +47,6 @@ export default function Timer() {
   const secondS = (seconds: number) => {
     return Math.floor((seconds % 60) % 10);
   };
-
-  interface State {
-    time: number;
-    running: boolean;
-    firstM: number;
-    secondM: number;
-    firstS: number;
-    secondS: number;
-  }
-
-  type TimeUpdater = (time: number) => number;
-
-  interface SET_TIME_ACTION {
-    type: typeof SET_TIME;
-    payload: TimeUpdater;
-  }
-
-  interface SET_RUNNING_ACTION {
-    type: typeof SET_RUNNING;
-    payload: boolean;
-  }
-
-  type Action = SET_TIME_ACTION | SET_RUNNING_ACTION;
 
   const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -117,16 +117,6 @@ export default function Timer() {
     { deltaY }: React.WheelEvent<HTMLElement>,
     digitName: string,
   ) => {
-    let how_to_change: string;
-
-    if (deltaY === 0) {
-      return;
-    } else if (deltaY > 0) {
-      how_to_change = "increase";
-    } else {
-      how_to_change = "decrease";
-    }
-
     let how_much_to_change;
 
     switch (digitName) {
@@ -146,7 +136,9 @@ export default function Timer() {
         return;
     }
 
-    if (how_to_change === "increase") {
+    if (deltaY === 0) {
+      return;
+    } else if (deltaY < 0) {
       how_much_to_change *= -1;
     }
 
@@ -155,10 +147,10 @@ export default function Timer() {
       payload: (prevTime) => {
         const newTime = prevTime + how_much_to_change;
 
-        if (newTime <= 0) {
+        if (newTime <= MIN_TIMER_VALUE) {
           return 0;
-        } else if (newTime >= 3600) {
-          return 3600;
+        } else if (newTime >= MAX_TIMER_VALUE) {
+          return MAX_TIMER_VALUE;
         } else {
           tickAudio.play();
           return newTime;
